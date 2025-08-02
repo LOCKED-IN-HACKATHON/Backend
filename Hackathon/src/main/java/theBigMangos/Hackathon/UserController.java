@@ -1,5 +1,6 @@
 package theBigMangos.Hackathon;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 @RestController
@@ -12,9 +13,10 @@ public class UserController {
         this.service = service;
     }
 
-    @PostMapping
-    public User createUser(@RequestBody User user) {
-        return service.createUser(user);
+    @PostMapping("/create")
+    public ResponseEntity<User> createUser(@RequestParam String username) {
+        User user = service.createUser(username);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/{id}")

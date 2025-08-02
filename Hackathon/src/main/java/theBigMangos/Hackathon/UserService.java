@@ -2,16 +2,21 @@ package theBigMangos.Hackathon;
 
 import org.springframework.stereotype.Service;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class UserService {
     private final UserRepo repo;
+    private static final AtomicLong idCounter = new AtomicLong();
 
     public UserService(UserRepo repo) {
         this.repo = repo;
     }
 
-    public User createUser(User user) {
+    public User createUser(String username) {
+        User user = new User();
+        user.setId(idCounter.incrementAndGet());
+        user.setUsername(username);
         return repo.save(user);
     }
 
@@ -27,7 +32,7 @@ public class UserService {
         repo.deleteById(id);
     }
 
-    public void updateUser(User user) {
+    public void saveUser(User user) {
         repo.save(user);
     }
 }

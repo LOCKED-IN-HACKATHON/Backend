@@ -2,6 +2,7 @@ package theBigMangos.Hackathon;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ import java.util.*;
  */
 
 @Entity
+@Table(name = "users")
 public class User {
 
 
