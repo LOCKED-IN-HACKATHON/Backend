@@ -16,7 +16,7 @@ import java.util.*;
  *
  * this is what is used to interact with the front end
  */
-
+@CrossOrigin
 @RestController
 @RequestMapping("/main")
 public class UserController {
@@ -49,6 +49,30 @@ public class UserController {
     }
 
     /**
+     * accept a friend request
+     * @param fromId
+     * @param toId
+     * @return
+     */
+    @PostMapping("/accept-Request")
+    public ResponseEntity<Boolean> acceptRequest(@RequestParam Long fromId, @RequestParam Long toId) {
+        service.getUser(fromId).get().acceptRequest(toId);
+        return ResponseEntity.ok(true);
+    }
+
+    /**
+     * reject a friend request
+     * @param fromId
+     * @param toId
+     * @return
+     */
+    @PostMapping("/reject-Request")
+    public ResponseEntity<Boolean> rejectRequest(@RequestParam Long fromId, @RequestParam Long toId) {
+        service.getUser(fromId).get().rejectRequest(toId);
+        return ResponseEntity.ok(false);
+    }
+
+    /**
      * Start study
      * @param id
      */
@@ -70,7 +94,7 @@ public class UserController {
         return ResponseEntity.ok(service.getUser(id).get().getScore());
     }
 
-    @PostMapping("/get-Points")
+    @GetMapping("/get-Points")
     public ResponseEntity<Integer> getPoints(@RequestParam Long id){
         return ResponseEntity.ok(service.getUser(id).get().getScore());
     }
