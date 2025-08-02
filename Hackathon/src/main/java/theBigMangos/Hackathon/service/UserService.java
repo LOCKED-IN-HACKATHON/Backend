@@ -1,6 +1,9 @@
-package theBigMangos.Hackathon;
+package theBigMangos.Hackathon.service;
 
 import org.springframework.stereotype.Service;
+import theBigMangos.Hackathon.model.User;
+import theBigMangos.Hackathon.repository.UserRepo;
+
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
