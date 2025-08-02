@@ -47,6 +47,7 @@ public class User {
 
     public void addFriend(Long friendId) {friends.add(friendId);}
     public void removeFriend(Long friendId) {friends.remove(friendId);}
+    public Set<Long>  getFriends() {return Collections.unmodifiableSet(friends);}
 
     public void setUsername(String username){this.username = username;}
 

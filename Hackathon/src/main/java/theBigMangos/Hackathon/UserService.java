@@ -9,10 +9,16 @@ public class UserService {
     private final UserRepo repo;
     private static final AtomicLong idCounter = new AtomicLong();
 
+
     public UserService(UserRepo repo) {
         this.repo = repo;
     }
 
+    public Set<Long> getUserFriends(Long userId) {
+        return repo.findById(userId)
+                .map(User::getFriends)
+                .orElse(Collections.emptySet());
+    }
     public User createUser(String username) {
         User user = new User();
         user.setId(idCounter.incrementAndGet());
@@ -20,8 +26,8 @@ public class UserService {
         return repo.save(user);
     }
 
-    public User getUser(Long id) {
-        return repo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    public Optional<User> getUser(Long id) {
+        return repo.findById(id);
     }
 
     public List<User> getAllUsers() {
