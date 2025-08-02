@@ -17,7 +17,7 @@ import java.util.*;
  */
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/main")
 public class UserController {
 
     private final UserService service;
