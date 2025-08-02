@@ -1,5 +1,6 @@
 package theBigMangos.Hackathon.controller;
 
+import com.google.firebase.messaging.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -134,6 +135,50 @@ public class UserController {
     public ResponseEntity<List<User>> getFriendLeaderBoard(){
         return ResponseEntity.ok(Collections.unmodifiableList(service.friendsLeaderBoard(1234L)));
     }
+
+    @CrossOrigin
+    @GetMapping("/addnotif/{notif}")
+    public ResponseEntity<Boolean> addNotif(@PathVariable String notif) {
+        notifs.add(notif);
+        System.out.println("Added notif " + notif);
+        return ResponseEntity.ok(true);
+    }
+
+    @CrossOrigin
+    @GetMapping("/sendnotifs")
+    public ResponseEntity<Boolean> sendAllNotifs() {
+        String tempLink = "https://04ef82f0639f.ngrok-free.app/";
+        notifs.forEach(n -> {
+            Notification notification = Notification.builder()
+                    .setTitle("title")
+                    .setBody("body")
+                    .build();
+
+            Message message = Message.builder()
+                    .setNotification(notification)
+                    .setToken(n)
+                    .setWebpushConfig(WebpushConfig.builder()
+                            .setFcmOptions(WebpushFcmOptions.builder()
+                                    .setLink(tempLink)
+                                    .build())
+                            .build())
+                    .build();
+            String response = null;
+            try {
+                response = FirebaseMessaging.getInstance().send(message);
+            } catch (FirebaseMessagingException e) {
+                throw new RuntimeException(e);
+            }
+
+            System.out.println("Successfully sent message: " + response);
+        });
+
+
+
+        return ResponseEntity.ok(true);
+    }
+
+    private final Set<String> notifs = new HashSet<>();
 
 }
 
