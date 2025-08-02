@@ -3,6 +3,7 @@ package theBigMangos.Hackathon;
 import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 
 /**
@@ -14,16 +15,33 @@ public class UserService {
     private final UserRepo repo;
     private static final AtomicLong idCounter = new AtomicLong();
 
-
     public UserService(UserRepo repo) {
         this.repo = repo;
     }
+
 
     public Set<Long> getUserFriends(Long userId) {
         return repo.findById(userId)
                 .map(User::getFriends)
                 .orElse(Collections.emptySet());
     }
+
+    /**
+     * returns a sorted list by score
+     */
+    public List<User> friendsLeaderBoard(Long userId) {
+        Set<Long> friendIds = getUserFriends(userId);
+        List<User> friends = friendIds.stream()
+                .map(this::getUser)
+                .flatMap(Optional::stream)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        getUser(userId).ifPresent(friends::add);
+        friends.sort(Comparator.comparingInt(User::getScore).reversed());
+        return friends;
+    }
+
+
     public User createUser(String username) {
         User user = new User();
         user.setId(idCounter.incrementAndGet());

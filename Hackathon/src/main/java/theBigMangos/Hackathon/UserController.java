@@ -89,5 +89,13 @@ public class UserController {
         return ResponseEntity.ok(Collections.unmodifiableSet(friends));
     }
 
+    /**
+     * returns a sorted list for leaderboard
+     */
+    @GetMapping("/me/friends/leaderboard")
+    public ResponseEntity<List<User>> getFriendLeaderBoard(){
+        return ResponseEntity.ok(Collections.unmodifiableList(service.friendsLeaderBoard(1234L)));
+    }
+
 }
 

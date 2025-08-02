@@ -104,6 +104,5 @@ public class User {
 
     public int getScore(){return score;}
     public int getHighScore(){return highScore;}
-
 }
 
