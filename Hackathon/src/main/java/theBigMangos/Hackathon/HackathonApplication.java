@@ -34,7 +34,7 @@ public class HackathonApplication {
 			user.setUsername("Ryan is cool");
 			user.setId(1234L);
 			for(User u : users) {
-				user.addFriend(u.getId());
+				user.acceptRequest(u.getId());
 				userService.saveUser(u);
 
 			}

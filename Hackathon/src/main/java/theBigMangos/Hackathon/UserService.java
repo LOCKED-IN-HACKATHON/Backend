@@ -19,11 +19,59 @@ public class UserService {
         this.repo = repo;
     }
 
+    public void sendRequest(Long fromId, Long toId){
+        User sender = getUser(fromId).get();
+        User to = getUser(toId).get();
+        to.recieveRequest(sender.getId());
+    }
 
+    /**
+     * Accept Friend Request Logic
+     * @param user
+     * @param from
+     */
+    public void acceptRequest(Long user, Long from){
+        User userToAccept = getUser(user).get();
+        User fromUser = getUser(from).get();
+        userToAccept.acceptRequest(fromUser.getId());
+        fromUser.acceptRequest(userToAccept.getId());
+    }
+
+    /**
+     * Removes friends from both users
+     *
+     * @param fromId
+     * @param toId
+     */
+    public void removeFriend(Long fromId, Long toId) {
+        User remover = getUser(fromId).get();
+        User toRemove =  getUser(toId).get();
+        remover.removeFriend(toRemove.getId());
+        toRemove.removeFriend(fromId);
+    }
+
+    /**
+     * get friends list of a user
+     *
+     * @param userId
+     * @return
+     */
     public Set<Long> getUserFriends(Long userId) {
         return repo.findById(userId)
                 .map(User::getFriends)
                 .orElse(Collections.emptySet());
+    }
+
+    /**
+     * Get a users friend requests
+     *
+     * @param userId
+     * @return
+     */
+    public Set<Long> getUserFriendRequests(Long userId) {
+        return Collections.unmodifiableSet(repo.findById(userId)
+                .map(User::getFriendRequests)
+                .orElse(Collections.emptySet()));
     }
 
     /**
@@ -38,10 +86,12 @@ public class UserService {
 
         getUser(userId).ifPresent(friends::add);
         friends.sort(Comparator.comparingInt(User::getScore).reversed());
-        return friends;
+        return Collections.unmodifiableList(friends);
     }
 
-
+    /**
+     * creates a User with a given name
+     */
     public User createUser(String username) {
         User user = new User();
         user.setId(idCounter.incrementAndGet());
@@ -49,18 +99,35 @@ public class UserService {
         return repo.save(user);
     }
 
+    /**
+     * gets a user by id
+     * @param id
+     * @return
+     */
     public Optional<User> getUser(Long id) {
         return repo.findById(id);
     }
 
+    /**
+     * gets all users
+     * @return
+     */
     public List<User> getAllUsers() {
         return repo.findAll();
     }
 
+    /**
+     * deletes a user from repo
+     * @param id
+     */
     public void deleteUser(Long id) {
         repo.deleteById(id);
     }
 
+    /**
+     * save a user into the repo
+     * @param user
+     */
     public void saveUser(User user) {
         repo.save(user);
     }

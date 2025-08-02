@@ -37,6 +37,7 @@ public class User {
     private LocalDate lastStudyDate;
     private LocalDateTime studyTimeStart;
     private LocalDateTime studyTimeEnded;
+    private Set<Long> friendRequests = new HashSet<>();
 
     /**
      * constructor for new user
@@ -49,10 +50,15 @@ public class User {
         highScore = 0;
     }
 
-    public void addFriend(Long friendId) {friends.add(friendId);}
-    public void removeFriend(Long friendId) {friends.remove(friendId);}
+    public void recieveRequest(Long id){friendRequests.add(id);}
+    public Set<Long> getFriendRequests(){return Collections.unmodifiableSet(friendRequests);}
     public Set<Long>  getFriends() {return Collections.unmodifiableSet(friends);}
-    public Set<Long> seeFriends(){return Collections.unmodifiableSet(friends);}
+    public void acceptRequest(Long friendId) {friends.add(friendId);friendRequests.remove(friendId);}
+    public void rejectRequest(Long friendId){friendRequests.remove(friendId);}
+    public void removeFriend(Long friendId) {friends.remove(friendId);}
+
+
+
     public void setId(Long id) {this.id = id;}
     public Long getId() {return id;}
     public void setUsername(String username){this.username = username;}
