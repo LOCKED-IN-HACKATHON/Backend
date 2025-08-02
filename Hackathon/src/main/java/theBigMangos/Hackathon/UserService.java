@@ -4,6 +4,11 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
+
+/**
+ * The service for the user
+ * interacts with each user given the command from the repo
+ */
 @Service
 public class UserService {
     private final UserRepo repo;

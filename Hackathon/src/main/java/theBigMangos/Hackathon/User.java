@@ -38,6 +38,10 @@ public class User {
     private LocalDateTime studyTimeStart;
     private LocalDateTime studyTimeEnded;
 
+    /**
+     * constructor for new user
+     * set everything to 0
+     */
     public User() {
         currentStreak = 0;
         bestStreak = 0;
@@ -48,14 +52,13 @@ public class User {
     public void addFriend(Long friendId) {friends.add(friendId);}
     public void removeFriend(Long friendId) {friends.remove(friendId);}
     public Set<Long>  getFriends() {return Collections.unmodifiableSet(friends);}
-
-    public void setUsername(String username){this.username = username;}
-
     public Set<Long> seeFriends(){return Collections.unmodifiableSet(friends);}
-
     public void setId(Long id) {this.id = id;}
     public Long getId() {return id;}
+    public void setUsername(String username){this.username = username;}
     public String getUsername() {return username;}
+    public int getCurrentStreak(){return currentStreak;}
+    public int getBestStreak(){return bestStreak;}
 
     public void startStudy(){studyTimeStart = LocalDateTime.now();}
     public void endStudy(){studyTimeEnded = LocalDateTime.now();}
@@ -72,10 +75,13 @@ public class User {
         lastStudyDate =  LocalDate.now();
     }
 
-    public int getCurrentStreak(){return currentStreak;}
-    public int getBestStreak(){return bestStreak;}
 
-
+    /**
+     * update the score
+     * 10 points per day
+     * 2 points per half hour
+     * 10 points once 3 hours is hit
+     */
     public void updateScore(){
         if(lastStudyDate.equals(LocalDate.now())){
             int halfHours = pointCalc();
@@ -87,7 +93,7 @@ public class User {
     }
 
     /**
-     * helper method
+     * helper method to calculate points
      */
     private int pointCalc(){
         Objects.requireNonNull(studyTimeStart, "Study start time is missing");

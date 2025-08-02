@@ -4,6 +4,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
+
+/**
+ * User controller
+ * many of the methods are preset to use the id "1234L"
+ * remember to change this in the future
+ *
+ * this is what is used to interact with the front end
+ */
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -14,12 +23,25 @@ public class UserController {
         this.service = service;
     }
 
+    /**
+     *  Called to create a new user, altough each field will need to be set
+     *
+     * @param username
+     *
+     * @return the user
+     */
     @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestParam String username) {
         User user = service.createUser(username);
         return ResponseEntity.ok(user);
     }
 
+    /**
+     * gets the user, checks if it is valid
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/users/{id}")
     public ResponseEntity<?> getUser(@PathVariable Long id) {
         return service.getUser(id)
@@ -30,11 +52,21 @@ public class UserController {
     }
 
 
+    /**
+     * returns every user
+     * @return
+     */
     @GetMapping
-    public List<User> getAllUsers() {
-        return service.getAllUsers();
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(Collections.unmodifiableList(service.getAllUsers()));
     }
 
+    /**
+     * gets the current user
+     * currently set to get the user with the id 1234L
+     *
+     * @return
+     */
     @GetMapping("/me")
     public ResponseEntity<User> getCurrentUser() {
         return service.getUser(1234L)
@@ -42,6 +74,11 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * returns the friends of a given user
+     * currently set to return the friends of the user with the id "1234L"
+     * @return
+     */
     @GetMapping("/me/friends")
     public ResponseEntity<Set<User>> getCurrentUserFriends() {
         Set<Long> friendsId = service.getUserFriends(1234L);
