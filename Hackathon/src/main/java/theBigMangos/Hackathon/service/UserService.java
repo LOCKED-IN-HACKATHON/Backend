@@ -22,6 +22,12 @@ public class UserService {
         this.repo = repo;
     }
 
+    /**
+     * Send a friend request to a given user
+     *
+     * @param fromId
+     * @param toId
+     */
     public void sendRequest(Long fromId, Long toId){
         User sender = getUser(fromId).get();
         User to = getUser(toId).get();
