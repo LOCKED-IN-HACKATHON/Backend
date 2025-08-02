@@ -48,6 +48,7 @@ public class User {
         bestStreak = 0;
         score = 0;
         highScore = 0;
+        lastStudyDate = LocalDate.now();
     }
 
     public void recieveRequest(Long id){friendRequests.add(id);}
@@ -66,8 +67,22 @@ public class User {
     public int getCurrentStreak(){return currentStreak;}
     public int getBestStreak(){return bestStreak;}
 
-    public void startStudy(){studyTimeStart = LocalDateTime.now();}
-    public void endStudy(){studyTimeEnded = LocalDateTime.now();}
+    public void startStudy(){
+        studyTimeStart = LocalDateTime.now();
+        updateStreak();
+    }
+    public void endStudy(){
+        if(this.studyTimeStart == null){
+            System.out.println("no study started");
+            return;
+        }
+        if (lastStudyDate == null) {
+            lastStudyDate = LocalDate.now(); // or handle as needed
+        }
+
+        studyTimeEnded = LocalDateTime.now();
+        updateScore();
+    }
 
     /**
      * checks validity of the streak
@@ -76,7 +91,10 @@ public class User {
     public boolean isStreakContinuing() {return lastStudyDate != null && lastStudyDate.equals(LocalDate.now().minusDays(1));}
     public void updateStreak(){
         if(isStreakContinuing()) currentStreak++;
-        else currentStreak = 0;
+        else {
+            currentStreak = 0;
+            score = 0;
+        }
         if(currentStreak > bestStreak) bestStreak = currentStreak;
         lastStudyDate =  LocalDate.now();
     }

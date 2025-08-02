@@ -1,5 +1,6 @@
 package theBigMangos.Hackathon.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import theBigMangos.Hackathon.model.User;
 import theBigMangos.Hackathon.repository.UserRepo;
@@ -28,6 +29,7 @@ public class UserService {
      * @param fromId
      * @param toId
      */
+    @Transactional
     public void sendRequest(Long fromId, Long toId){
         User sender = getUser(fromId).get();
         User to = getUser(toId).get();
@@ -39,6 +41,7 @@ public class UserService {
      * @param user
      * @param from
      */
+    @Transactional
     public void acceptRequest(Long user, Long from){
         User userToAccept = getUser(user).get();
         User fromUser = getUser(from).get();
@@ -52,6 +55,7 @@ public class UserService {
      * @param fromId
      * @param toId
      */
+    @Transactional
     public void removeFriend(Long fromId, Long toId) {
         User remover = getUser(fromId).get();
         User toRemove =  getUser(toId).get();
@@ -69,6 +73,15 @@ public class UserService {
         return repo.findById(userId)
                 .map(User::getFriends)
                 .orElse(Collections.emptySet());
+    }
+    @Transactional
+    public void startStudy(Long userId){
+        repo.findById(userId).get().startStudy();
+    }
+
+    @Transactional
+    public void endStudy(Long userId){
+        repo.findById(userId).get().endStudy();
     }
 
     /**
@@ -117,7 +130,7 @@ public class UserService {
         return repo.findById(id);
     }
 
-    /**
+    /**`
      * gets all users
      * @return
      */

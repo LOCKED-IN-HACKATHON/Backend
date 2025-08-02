@@ -17,7 +17,7 @@ import java.util.*;
  */
 
 @RestController
-    @RequestMapping("/main")
+@RequestMapping("/main")
 public class UserController {
 
     private final UserService service;
@@ -36,7 +36,42 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity<User> createUser(@RequestParam String username) {
         User user = service.createUser(username);
+        System.out.println(user);
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/friend-request")
+    public ResponseEntity<Boolean> sendFriendRequest(@RequestParam Long fromId, @RequestParam Long toId) {
+        service.sendRequest(fromId, toId);
+        System.out.println("Friend request from " + fromId + " to " + toId);
+        return ResponseEntity.ok(true);
+    }
+
+    /**
+     * Start study
+     * @param id
+     */
+    @PostMapping("/start-Study")
+    public ResponseEntity<Integer> startStudy(@RequestParam Long id) {
+        service.startStudy(id);
+        System.out.println("Study started for student: " + id);
+        return ResponseEntity.ok(service.getUser(id).get().getScore());
+    }
+
+    /**
+     * end study session
+     * @param id
+     */
+    @PostMapping("/end-Study")
+    public ResponseEntity<Integer> endStudy(@RequestParam Long id) {
+        service.endStudy(id);
+        System.out.println("Study ended for student: " + id);
+        return ResponseEntity.ok(service.getUser(id).get().getScore());
+    }
+
+    @PostMapping("/get-Points")
+    public ResponseEntity<Integer> getPoints(@RequestParam Long id){
+        return ResponseEntity.ok(service.getUser(id).get().getScore());
     }
 
     /**
