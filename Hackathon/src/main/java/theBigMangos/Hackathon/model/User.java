@@ -101,7 +101,6 @@ public class User {
         if(isStreakContinuing()) currentStreak++;
         else {
             currentStreak = 0;
-            score = 0;
         }
         if(currentStreak > bestStreak) bestStreak = currentStreak;
         lastStudyDate =  LocalDate.now();
@@ -115,12 +114,9 @@ public class User {
      * 10 points once 3 hours is hit
      */
     public void updateScore(){
-        if(lastStudyDate.equals(LocalDate.now())){
-            int halfHours = pointCalc();
-            score += 10; // daily score
-            score += halfHours * 2; // 2 points per 30 mins
-            if(halfHours >= 6) score += 10; // bonus 10 points once hit 3 hours
-        }
+        int halfMins = pointCalc();
+        score += halfMins * 10; // 2 points per 30 secs
+        if(halfMins >= 60) score += 10; // bonus 10 points once hit 3 hours
         if(score > highScore) highScore = score;
     }
 
@@ -131,7 +127,7 @@ public class User {
         Objects.requireNonNull(studyTimeStart, "Study start time is missing");
         Objects.requireNonNull(studyTimeEnded, "Study end time is missing");
         Duration duration = Duration.between(studyTimeStart, studyTimeEnded);
-        return (int) duration.toMinutes();
+        return (int) duration.toSeconds()/30;
     }
 
     public int getScore(){return score;}

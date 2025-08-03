@@ -198,11 +198,11 @@ public class UserController {
 
     @GetMapping("/sendnotifs")
     public ResponseEntity<Boolean> sendAllNotifs() {
-        String tempLink = "https://04ef82f0639f.ngrok-free.app/";
+        String tempLink = "https://1505193d76ce.ngrok-free.app/";
         notifs.forEach(n -> {
             Notification notification = Notification.builder()
-                    .setTitle("title")
-                    .setBody("body")
+                    .setTitle("John is locked in \uD83D\uDD25")
+                    .setBody("Ready to join him?")
                     .build();
 
             Message message = Message.builder()
