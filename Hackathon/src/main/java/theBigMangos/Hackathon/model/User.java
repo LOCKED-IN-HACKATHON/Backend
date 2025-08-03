@@ -131,7 +131,7 @@ public class User {
         Objects.requireNonNull(studyTimeStart, "Study start time is missing");
         Objects.requireNonNull(studyTimeEnded, "Study end time is missing");
         Duration duration = Duration.between(studyTimeStart, studyTimeEnded);
-        return (int) duration.toMinutes() / 30;
+        return (int) duration.toMinutes();
     }
 
     public int getScore(){return score;}

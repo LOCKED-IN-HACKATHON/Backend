@@ -185,14 +185,17 @@ public class UserController {
         return ResponseEntity.ok(Collections.unmodifiableList(service.friendsLeaderBoard(id)));
     }
 
-    @PostMapping("/addnotif/{notif}")
+    @GetMapping("/addnotif/{notif}")
     public ResponseEntity<Boolean> addNotif(@PathVariable String notif) {
+        if (notif == null || notif.equals("undefined")) {
+            System.out.println("undef!!");
+            return ResponseEntity.badRequest().build();
+        }
         notifs.add(notif);
         System.out.println("Added notif " + notif);
         return ResponseEntity.ok(true);
     }
 
-    @CrossOrigin
     @GetMapping("/sendnotifs")
     public ResponseEntity<Boolean> sendAllNotifs() {
         String tempLink = "https://04ef82f0639f.ngrok-free.app/";
