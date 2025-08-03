@@ -54,7 +54,7 @@ public class User {
     public void recieveRequest(Long id){friendRequests.add(id);}
     public Set<Long> getFriendRequests(){return Collections.unmodifiableSet(friendRequests);}
     public Set<Long>  getFriends() {return Collections.unmodifiableSet(friends);}
-    public void acceptRequest(Long friendId) {friends.add(friendId);friendRequests.remove(friendId);}
+    public void acceptRequest(Long friendId) {friends.add(friendId); friendRequests.remove(friendId);}
     public void rejectRequest(Long friendId){friendRequests.remove(friendId);}
     public void removeFriend(Long friendId) {friends.remove(friendId);}
 

@@ -81,7 +81,7 @@ public class UserController {
      */
     @PostMapping("/accept-Request")
     public ResponseEntity<Boolean> acceptRequest(@RequestParam Long fromId, @RequestParam Long toId) {
-        service.getUser(fromId).get().acceptRequest(toId);
+        service.acceptRequest(toId, fromId); // recipient accepts request from requester
         return ResponseEntity.ok(true);
     }
 
@@ -93,8 +93,8 @@ public class UserController {
      */
     @PostMapping("/reject-Request")
     public ResponseEntity<Boolean> rejectRequest(@RequestParam Long fromId, @RequestParam Long toId) {
-        service.getUser(fromId).get().rejectRequest(toId);
-        return ResponseEntity.ok(false);
+        service.rejectRequest(toId, fromId); // recipient rejects request from requester
+        return ResponseEntity.ok(true);
     }
 
     /**

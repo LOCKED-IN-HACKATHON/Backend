@@ -50,6 +50,10 @@ public class UserService {
         fromUser.acceptRequest(userToAccept.getId());
     }
 
+    public void rejectRequest(Long user, Long from) {
+        getUser(user).ifPresent(u -> u.rejectRequest(from));
+    }
+
     /**
      * Removes friends from both users
      *
