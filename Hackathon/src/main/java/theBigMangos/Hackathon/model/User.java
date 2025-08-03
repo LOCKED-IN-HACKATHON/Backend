@@ -71,17 +71,25 @@ public class User {
         studyTimeStart = LocalDateTime.now();
         updateStreak();
     }
-    public void endStudy(){
+
+    /**
+     * returns amount of time studied
+     * @return
+     */
+    public String endStudy(){
+        studyTimeEnded = LocalDateTime.now();
+        Timer timeStudied = new Timer();
+        Duration duration = Duration.between(studyTimeStart, studyTimeEnded);
+
         if(this.studyTimeStart == null){
             System.out.println("no study started");
-            return;
+            return "0:00";
         }
         if (lastStudyDate == null) {
             lastStudyDate = LocalDate.now(); // or handle as needed
         }
-
-        studyTimeEnded = LocalDateTime.now();
         updateScore();
+        return String.format("%d:%02d",duration.toMinutes(),duration.toSeconds());
     }
 
     /**

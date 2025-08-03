@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import theBigMangos.Hackathon.model.User;
 import theBigMangos.Hackathon.repository.UserRepo;
 
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -80,8 +81,8 @@ public class UserService {
     }
 
     @Transactional
-    public void endStudy(Long userId){
-        repo.findById(userId).get().endStudy();
+    public String endStudy(Long userId){
+        return repo.findById(userId).get().endStudy();
     }
 
     /**
@@ -110,6 +111,9 @@ public class UserService {
         friends.sort(Comparator.comparingInt(User::getScore).reversed());
         return Collections.unmodifiableList(friends);
     }
+
+
+
 
     /**
      * creates a User with a given name
@@ -150,7 +154,7 @@ public class UserService {
      * save a user into the repo
      * @param user
      */
-    public void saveUser(User user) {
-        repo.save(user);
+    public User saveUser(User user) {
+        return repo.save(user);
     }
 }
