@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import theBigMangos.Hackathon.model.User;
 import theBigMangos.Hackathon.service.UserService;
 
-import java.time.Duration;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -16,7 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * User controller
  * many of the methods are preset to use the id "1234L"
  * remember to change this in the future
- *
+ * <p>
  * this is what is used to interact with the front end
  */
 @CrossOrigin
@@ -25,6 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class UserController {
 
     private final UserService service;
+    private final Set<String> notifs = new HashSet<>();
 
     public UserController(UserService service) {
         this.service = service;
@@ -32,6 +31,7 @@ public class UserController {
 
     /**
      * Log in with an ID
+     *
      * @param id
      * @return
      */
@@ -53,10 +53,9 @@ public class UserController {
     }
 
     /**
-     *  Called to create a new user, altough each field will need to be set
+     * Called to create a new user, altough each field will need to be set
      *
      * @param username
-     *
      * @return the user
      */
     @PostMapping("/create")
@@ -75,6 +74,7 @@ public class UserController {
 
     /**
      * accept a friend request
+     *
      * @param fromId
      * @param toId
      * @return
@@ -87,6 +87,7 @@ public class UserController {
 
     /**
      * reject a friend request
+     *
      * @param fromId
      * @param toId
      * @return
@@ -99,6 +100,7 @@ public class UserController {
 
     /**
      * Start study
+     *
      * @param id
      */
     @PostMapping("/start-Study")
@@ -110,6 +112,7 @@ public class UserController {
 
     /**
      * end study session
+     *
      * @param id
      */
     @PostMapping("/end-Study")
@@ -120,7 +123,7 @@ public class UserController {
     }
 
     @GetMapping("/get-Points")
-    public ResponseEntity<Integer> getPoints(@RequestParam Long id){
+    public ResponseEntity<Integer> getPoints(@RequestParam Long id) {
         return ResponseEntity.ok(service.getUser(id).get().getScore());
     }
 
@@ -139,9 +142,9 @@ public class UserController {
                         .body(Map.of("error", "User not found")));
     }
 
-
     /**
      * returns every user
+     *
      * @return
      */
     @GetMapping
@@ -165,6 +168,7 @@ public class UserController {
     /**
      * returns the friends of a given user
      * currently set to return the friends of the user with the id "1234L"
+     *
      * @return
      */
     @GetMapping("/me/friends")
@@ -218,18 +222,15 @@ public class UserController {
             try {
                 response = FirebaseMessaging.getInstance().send(message);
             } catch (FirebaseMessagingException e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
 
             System.out.println("Successfully sent message: " + response);
         });
 
 
-
         return ResponseEntity.ok(true);
     }
-
-    private final Set<String> notifs = new HashSet<>();
 
 }
 
