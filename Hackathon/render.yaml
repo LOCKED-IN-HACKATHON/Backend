@@ -3,5 +3,5 @@ services:
     name: backend
     env: java
     plan: free
-    buildCommand: ./mvnw clean package -DskipTests
+    buildCommand: mvn clean package -DskipTests
     startCommand: java -jar target/*.jar
