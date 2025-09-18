@@ -5,4 +5,3 @@ services:
     plan: free
     rootDir: Hackathon
     buildCommand: ./mvnw clean install -DskipTests
-    startCommand: java -jar target/*.jar
