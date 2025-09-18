@@ -1,7 +1,0 @@
-services:
-  - type: web
-    name: backend
-    env: java
-    plan: free
-    buildCommand: ./mvnw clean package -DskipTests
-    startCommand: java -jar target/*.jar
