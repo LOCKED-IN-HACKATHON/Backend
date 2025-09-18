@@ -1,7 +1,8 @@
 services:
   - type: web
     name: backend
-    env: java
+    runtime: java
     plan: free
+    rootDir: Backend        # 👈 only if your pom.xml is inside /Backend
     buildCommand: mvn clean package -DskipTests
     startCommand: java -jar target/*.jar
