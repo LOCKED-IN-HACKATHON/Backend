@@ -3,6 +3,6 @@ services:
     name: backend
     runtime: java
     plan: free
-    rootDir: Hackathon/Backend   # 👈 points Render to where pom.xml is
+    rootDir: Hackathon     # 👈 points to the folder where pom.xml is
     buildCommand: mvn clean package -DskipTests
     startCommand: java -jar target/*.jar
